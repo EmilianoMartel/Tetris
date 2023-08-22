@@ -13,7 +13,7 @@ public class Piece : MonoBehaviour
         Yellow
     }
 
-    [SerializeField] List<SpriteRenderer> _spriteList = new List<SpriteRenderer>();
+    [SerializeField] List<PixelPiece> _pixelList = new List<PixelPiece>();
     [SerializeField] private ColorSelector _color;
     private Color _tempColor;
 
@@ -59,10 +59,9 @@ public class Piece : MonoBehaviour
 
     private void ColorInput()
     {
-        for (int i = 0; i < _spriteList.Count; i++)
+        for (int i = 0; i < _pixelList.Count; i++)
         {
-            _spriteList[i].color = _tempColor;
+            _pixelList[i].SelectedColor(_tempColor);
         }
     }
-
 }
