@@ -8,8 +8,9 @@ public class TableManager : MonoBehaviour
     [SerializeField] int _row; //High
     [SerializeField] int _column; //Width
     private GameObject[,] _tableDimention => new GameObject[_row, _column];
-    [SerializeField] GameObject _pixelPrefab;
-    private GameObject _pixel;
+    [SerializeField] Pixel _pixelPrefab;
+    [SerializeField] SpawnManager _spawnManager;
+    private Pixel _pixel;
 
     private void Awake()
     {
@@ -23,23 +24,27 @@ public class TableManager : MonoBehaviour
             for (int f_column = 0; f_column < _column; f_column++)
             {
                 _pixel = Instantiate(_pixelPrefab, transform.position + new Vector3(f_row, f_column, 10), Quaternion.identity);
-                if (f_column == (_column - 1) / 2 && f_row == _row -1)
+                _pixel.transform.parent = transform;
+                if (f_column == (_column - 1) && f_row == (_row -1) / 2)
                 {
-                    Debug.Log("encuentro el medio");
                     //middle this is the spawn zone
-                    _pixel.GetComponent<SpriteRenderer>().color = Color.gray;
+                    _pixel.state = Pixel.State.Spawner;
+                    _spawnManager.SpawnerPoint(_pixel);
                 }
                 else if (f_column == 0)
                 {
                     //base of board
-                    _pixel.GetComponent<SpriteRenderer>().color = Color.gray;
+                    _pixel.state = Pixel.State.Base;
                 }
                 else if (f_row == 0 || f_row == _row - 1 || f_column == _column - 1)
                 {
                     //wall of board
-                    _pixel.GetComponent<SpriteRenderer>().color = Color.gray;
+                    _pixel.state = Pixel.State.Wall;
                 }
-                _tableDimention[f_row, f_column] = _pixel;
+                else
+                {
+                    _pixel.state = Pixel.State.Empty;
+                }
             }
         }
     }
