@@ -13,13 +13,27 @@ public class Piece : MonoBehaviour
         Yellow
     }
 
+    //Color selection
     [SerializeField] List<PixelPiece> _pixelList = new List<PixelPiece>();
     [SerializeField] private ColorSelector _color;
     private Color _tempColor;
 
+    //Movement
+    private Vector3 _direction = new Vector3();
+    [SerializeField] private float _baseSpeed = 1f; //base speed of piece
+    [SerializeField] private Player _player;
+
     private void Start()
     {
+        MovementDown();
         ColorSelection();
+        _player.movementEvent += SetDirectionValue;
+        _player.rotationEvent += Rotation;
+    }
+
+    private void Update()
+    {
+        transform.position += _direction * _baseSpeed * Time.deltaTime;
     }
 
     private void Rotation()
@@ -36,6 +50,7 @@ public class Piece : MonoBehaviour
 
     private void ColorSelection()
     {
+        //Basic color selection by switch case
         switch (_color)
         {
             case ColorSelector.Red:
@@ -63,5 +78,29 @@ public class Piece : MonoBehaviour
         {
             _pixelList[i].SelectedColor(_tempColor);
         }
+    }
+
+    private void MovementDown()
+    {
+        _direction = new Vector3(0, -1, 0);
+    }
+
+    private void SetDirectionValue(Vector2 direction)
+    {
+        if (direction.y > 0.5f)
+        {
+            direction.y = -0.5f;
+        }
+        else
+        {
+            direction.y = -1;
+        }
+        _direction = new Vector3(direction.x, direction.y, 0);
+    }
+
+    private void OnDestroy()
+    {
+        _player.movementEvent -= SetDirectionValue;
+        _player.rotationEvent -= Rotation;
     }
 }
