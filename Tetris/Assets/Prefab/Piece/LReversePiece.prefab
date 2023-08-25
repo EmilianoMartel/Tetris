@@ -54,6 +54,8 @@ MonoBehaviour:
   - {fileID: 4916272112375666625}
   - {fileID: 6826093970035329012}
   _color: 0
+  _baseSpeed: 1
+  _player: {fileID: 793636386015511726, guid: ae86ae92e3dd8f244807e04e0d5458b8, type: 3}
 --- !u!1001 &5650058830885912668
 PrefabInstance:
   m_ObjectHideFlags: 0
