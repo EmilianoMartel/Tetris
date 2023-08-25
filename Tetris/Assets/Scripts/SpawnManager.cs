@@ -6,7 +6,8 @@ public class SpawnManager : MonoBehaviour
 {
     private Pixel _spawnPoint;
     public Piece piece;
-    [SerializeField] private List<Piece> _pieceList;
+    private List<Piece> _pieceList = new List<Piece>();
+    [SerializeField] private List<Piece> _pieceListPrefab;
 
     private void Start()
     {
@@ -33,10 +34,12 @@ public class SpawnManager : MonoBehaviour
 
     private void PreparedPiece()
     {
-        for (int i = 0; i < _pieceList.Count; i++)
+        for (int i = 0; i < _pieceListPrefab.Count; i++)
         {
-            Instantiate(_pieceList[i],_spawnPoint.transform.position,Quaternion.identity);
-            //_pieceList[i].transform.parent = transform;
+            piece = Instantiate(_pieceListPrefab[i], _spawnPoint.transform.position, Quaternion.identity);
+            piece.transform.parent = transform;
+            _pieceList.Add(piece);
+            piece.gameObject.SetActive(false);
         }
     }
 }
